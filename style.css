@@ -1,0 +1,14 @@
+body {
+    background-color: #005600;
+    color: #fffa93;
+    font-family: "Lucida Console", "Courier New", monospace;
+}
+
+button {
+    background-color: #6d40ff;
+    color: #fcabe1;
+}
+
+img {
+    width: 200px;
+}
