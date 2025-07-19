@@ -2,16 +2,41 @@ body {
     background-color: #005600;
     color: #fffa93;
     font-family: "Lucida Console", "Courier New", monospace;
-    font-size: 2em;
+    font-size: 1.2rem;
 }
 
 button {
     background-color: #6d40ff;
     color: #fcabe1;
     font-family: "Lucida Console", "Courier New", monospace;
-    font-size: 1.5em;
+    font-size: 1rem;
+}
+
+.container {
+    max-width: 90%;
+    margin: auto;
+    padding: 10px;
 }
 
 img {
-    width: 200px;
+    max-width: 50%;
+    height: auto;
+}
+
+@media (max-width: 600px) {
+    body {
+        font-size:1rem
+    }
+    button {
+        font-size: 0.875rem;
+    }
+}
+
+p {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+* {
+    box-sizing: border-box;
 }
