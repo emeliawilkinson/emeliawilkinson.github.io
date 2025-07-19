@@ -2,11 +2,14 @@ body {
     background-color: #005600;
     color: #fffa93;
     font-family: "Lucida Console", "Courier New", monospace;
+    font-size: 2em;
 }
 
 button {
     background-color: #6d40ff;
     color: #fcabe1;
+    font-family: "Lucida Console", "Courier New", monospace;
+    font-size: 1.5em;
 }
 
 img {
