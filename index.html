@@ -4,24 +4,19 @@
 <meta charset="UTF-8">
 <title>Set Daddy</title>
 <style>
-/* ======= Dark‑mode styling ======= */
+/* ======= Dark-mode styling ======= */
 body {
   font-family: Arial, sans-serif;
   margin: 2rem;
-  background: #1e1e1e;          /* dark background */
-  color: #e0e0e0;               /* light text */
+  background: #1e1e1e;
+  color: #e0e0e0;
 }
-
-h1, h2 {
-  margin-top: 1;
-}
-
+h1, h2 { margin-top: 1; }
 img {
-    float: right;
-    margin-left: 20px;
-    max-width: 300px;
+  float: right;
+  margin-left: 20px;
+  max-width: 300px;
 }
-
 label {
   display:block;
   margin-top:1rem;
@@ -29,21 +24,16 @@ label {
   font-weight:bold;
   color: #cfcfcf;
 }
-
 textarea, input[type="number"] {
   width:100%;
   padding:0.5rem;
   font-family:monospace;
-  background: #2d2d2d;          /* slightly lighter textarea */
+  background: #2d2d2d;
   color: #dcdcdc;
   border: 1px solid #444;
   border-radius: 3px;
 }
-
-textarea {
-  height:200px;
-}
-
+textarea { height:200px; }
 button {
   margin-top:1rem;
   padding:0.7rem 1.5rem;
@@ -54,11 +44,7 @@ button {
   border-radius:3px;
   cursor:pointer;
 }
-
-button:hover {
-  background:#4a4a4a;
-}
-
+button:hover { background:#4a4a4a; }
 #output {
   margin-top:2rem;
   white-space:pre-wrap;
@@ -68,7 +54,6 @@ button:hover {
   border-radius:3px;
   color:#dcdcdc;
 }
-
 .example {
   background:#3a3a3a;
   padding:0.5rem;
@@ -76,85 +61,112 @@ button:hover {
   font-family:monospace;
   color:#dcdcdc;
 }
+.song-entry {
+  margin: 0.3rem 0;
+}
+.song-entry button {
+  margin-left: 0.5rem;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.8rem;
+}
 </style>
 </head>
 <body>
 <img src="logo.png" alt="Set Daddy">
-
 <h1>Set Daddy</h1>
 <h2>Papa provides. You practice.</h2>
-<p>
-  <strong>Data entry format:</strong>
-  <br><br>
-  <code>song title, cb/ncb (chop buster or not chop buster), speed, duration (minutes)</code>
-</p>
+
+<p><strong>Data entry format:</strong><br><br>
+<code>song title, cb/ncb (chop buster or not chop buster), speed, duration (minutes)</code></p>
 
 <label for="songInput">Enter songs:</label>
 <textarea id="songInput" placeholder="e.g.&#10;nola medley, ncb, moderate, 5&#10;thats it, cb, fast, 7"></textarea>
 
 <label for="setLength">Set length (minutes):</label>
-<input type="number" id="setLength" min="1" value="15">
+<input type="number" id="setLength" min="1" value="30">
 
-<button id="generateBtn">Generate Setlist</button>
+<button id="generateBtn">Generate</button>
+<button id="addAllBtn">Add All</button>
+<button id="clearAllBtn">Clear</button>
 
 <h2>Output</h2>
 <pre id="output"></pre>
 
+</br>
+<h2>Songs</h2>
+<div id="songList">
+  <p class="song-entry">bad guy, ncb, fast, 3 <button class="addBtn">+</button></p>
+  <p class="song-entry">bella ciao, ncb, moderate, 2 <button class="addBtn">+</button></p>
+  <p class="song-entry">besame, ncb, moderate, 5 <button class="addBtn">+</button></p>
+  <p class="song-entry">beyoncelina, ncb, fast, 4 <button class="addBtn">+</button></p>
+  <p class="song-entry">big shoes, ncb, moderate, 5 <button class="addBtn">+</button></p>
+  <p class="song-entry">blackbird, ncb, fast, 5 <button class="addBtn">+</button></p>
+  <p class="song-entry">bourbon, ncb, moderate, 4 <button class="addBtn">+</button></p>
+  <p class="song-entry">brass riot, cb, fast, 4 <button class="addBtn">+</button></p>
+  <p class="song-entry">bump, ncb, slow, 4 <button class="addBtn">+</button></p>
+  <p class="song-entry">candombe, ncb, slow, 5 <button class="addBtn">+</button></p>
+  <p class="song-entry">clandespacito, ncb, slow, 5 <button class="addBtn">+</button></p>
+  <p class="song-entry">cumbia, ncb, slow, 5 <button class="addBtn">+</button></p>
+  <p class="song-entry">dwyw, ncb, moderate, 4 <button class="addBtn">+</button></p>
+  <p class="song-entry">freedom, ncb, moderate, 3 <button class="addBtn">+</button></p>
+  <p class="song-entry">funkapocalyptic, cb, fast, 5 <button class="addBtn">+</button></p>
+  <p class="song-entry">hot sects, ncb, moderate, 5 <button class="addBtn">+</button></p>
+  <p class="song-entry">just add music, ncb, moderate, 4 <button class="addBtn">+</button></p>
+  <p class="song-entry">katrina, ncb, slow, 5 <button class="addBtn">+</button></p>
+  <p class="song-entry">mad world, ncb, moderate, 6 <button class="addBtn">+</button></p>
+  <p class="song-entry">master blaster, ncb, slow, 4 <button class="addBtn">+</button></p>
+  <p class="song-entry">mercy, ncb, moderate, 8 <button class="addBtn">+</button></p>
+  <p class="song-entry">nola medley, ncb, moderate, 5 <button class="addBtn">+</button></p>
+  <p class="song-entry">pepas, ncb, moderate, 4 <button class="addBtn">+</button></p>
+  <p class="song-entry">pinch, cb, moderate, 4 <button class="addBtn">+</button></p>
+  <p class="song-entry">ppc, ncb, slow, 4 <button class="addBtn">+</button></p>
+  <p class="song-entry">rage, ncb, moderate, 3 <button class="addBtn">+</button></p>
+  <p class="song-entry">rws, ncb, moderate, 7 <button class="addBtn">+</button></p>
+  <p class="song-entry">shake, cb, fast, 4 <button class="addBtn">+</button></p>
+  <p class="song-entry">slice, ncb, moderate, 6 <button class="addBtn">+</button></p>
+  <p class="song-entry">thats it, cb, fast, 4 <button class="addBtn">+</button></p>
+  <p class="song-entry">toxic, cb, fast, 3 <button class="addBtn">+</button></p>
+  <p class="song-entry">track shot, ncb, slow, 6 <button class="addBtn">+</button></p>
+  <p class="song-entry">trust the poets, ncb, slow, 5 <button class="addBtn">+</button></p>
+  <p class="song-entry">tubman, ncb, slow, 5 <button class="addBtn">+</button></p>
+  <p class="song-entry">waltzing with rhonda, ncb, slow, 3 <button class="addBtn">+</button></p>
+</div>
+
 <script>
 /* ======= Utility functions ======= */
-
-/**
- * Shuffle an array in place (Fisher‑Yates)
- */
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
   }
 }
-
-/**
- * Parse the text from the textarea into an array of song objects
- * Each object: { title, cb (bool), pace, duration }
- */
 function parseSongs(text) {
   const lines = text.split('\n');
   const songs = [];
-
   for (let raw of lines) {
     raw = raw.trim();
-    if (!raw) continue;                     // skip empty lines
+    if (!raw) continue;
     const parts = raw.split(',').map(p => p.trim().toLowerCase());
-    if (parts.length !== 4) continue;       // invalid line – skip
+    if (parts.length !== 4) continue;
     const [title, cbFlag, pace, durStr] = parts;
     const duration = parseFloat(durStr);
-    if (isNaN(duration)) continue;          // invalid duration – skip
-    const cb = cbFlag === 'cb';              // true if chop‑buster
+    if (isNaN(duration)) continue;
+    const cb = cbFlag === 'cb';
     songs.push({ title, cb, pace, duration });
   }
   return songs;
 }
-
-/**
- * Build a single setlist that satisfies all constraints
- * @param {Array} songs   – array of song objects
- * @param {number} setLen – desired total minutes
- * @returns {Array} – chosen songs in order
- */
 function buildSet(songs, setLen) {
   const cbSongs = songs.filter(s => s.cb);
   const nonCbSongs = songs.filter(s => !s.cb);
   shuffle(cbSongs);
   shuffle(nonCbSongs);
-
-  // Helper to try building with a given cb position (2 or 3)
   function tryWithCb(pos) {
-    if (!cbSongs.length) return null;       // no cb – skip
-    const cb = cbSongs[0];                  // take the first cb
+    if (!cbSongs.length) return null;
+    const cb = cbSongs[0];
     const result = [];
     let total = 0;
     let lastPace = null;
-
     function addSong(song) {
       if (lastPace === 'slow' && song.pace === 'slow') return false;
       result.push(song);
@@ -162,43 +174,29 @@ function buildSet(songs, setLen) {
       lastPace = song.pace;
       return true;
     }
-
-    // Fill up to the desired index with regular songs
     for (let i = 0; i < pos - 1; i++) {
       const next = nonCbSongs.shift();
       if (!next) break;
       if (!addSong(next)) break;
     }
-
-    // Add the chop‑buster
     if (!addSong(cb)) return null;
-
-    // Continue adding until we reach or exceed set length
     while (total < setLen && nonCbSongs.length) {
       const next = nonCbSongs.shift();
-      if (!addSong(next)) continue; // skip if would break rules
+      if (!addSong(next)) continue;
     }
-
-    // Trim if we exceeded
     while (total > setLen && result.length) {
       const last = result.pop();
       total -= last.duration;
     }
-
-    // Verify cb is in position 2 or 3
     const cbIndex = result.findIndex(s => s.cb);
     if (cbIndex !== 1 && cbIndex !== 2) return null;
-
     return result;
   }
-
   let set = tryWithCb(2) || tryWithCb(3);
-  if (!set) return [];  // cannot satisfy constraints
-  return set;
+  return set || [];
 }
 
-/* ======= UI event handlers ======= */
-
+/* ======= UI logic ======= */
 document.getElementById('generateBtn').addEventListener('click', () => {
   const inputText = document.getElementById('songInput').value;
   const setLen = parseInt(document.getElementById('setLength').value, 10);
@@ -206,22 +204,17 @@ document.getElementById('generateBtn').addEventListener('click', () => {
     alert('Please enter a valid set length (minutes).');
     return;
   }
-
   const songs = parseSongs(inputText);
   if (!songs.length) {
     alert('No valid songs were found in the input.');
     return;
   }
-
   const set = buildSet(songs, setLen);
-
   if (!set.length) {
     document.getElementById('output').textContent =
       'Couldn’t build a set that meets all constraints with the supplied songs.';
     return;
   }
-
-  // Pretty‑print the result
   const lines = set.map((s, i) => {
     const cbMark = s.cb ? ' (CB)' : '';
     return `${i + 1}. ${s.title}${cbMark} – ${s.pace} – ${s.duration} min`;
@@ -229,43 +222,24 @@ document.getElementById('generateBtn').addEventListener('click', () => {
   lines.push(`\nTotal: ${set.reduce((a, s) => a + s.duration, 0)} min`);
   document.getElementById('output').textContent = lines.join('\n');
 });
-</script>
 
-<h2>Tunes</h2>
-<p>bad guy, ncb, fast, 3</p>
-<p>bella ciao, ncb, moderate, 2</p>
-<p>besame, ncb, moderate, 5</p>
-<p>beyoncelina, ncb, fast, 4</p>
-<p>big shoes, ncb, moderate, 5</p>
-<p>blackbird, ncb, fast, 5</p>
-<p>bourbon, ncb, moderate, 4</p>
-<p>brass riot, cb, fast, 4</p>
-<p>bump, ncb, slow, 4</p>
-<p>candombe, ncb, slow, 5</p>
-<p>clandespacito, ncb, slow, 5</p>
-<p>cumbia, ncb, slow, 5</p>
-<p>dwyw, ncb, moderate, 4</p>
-<p>freedom, ncb, moderate, 3</p>
-<p>funkapocalyptic, cb, fast, 5</p>
-<p>hot sects, ncb, moderate, 5</p>
-<p>just add music, ncb, moderate, 4</p>
-<p>katrina, ncb, slow, 5</p>
-<p>mad world,  ncb, moderate, 6</p>
-<p>master blaster, ncb, slow, 4</p>
-<p>mercy, ncb, moderate, 8</p>
-<p>nola medley, ncb, moderate, 5</p>
-<p>pepas, ncb, moderate, 4</p>
-<p>pinch, cb, moderate, 4</p>
-<p>ppc, ncb, slow, 4</p>
-<p>rage, ncb, moderate, 3</p>
-<p>rws, ncb, moderate, 7</p>
-<p>shake, cb, fast, 4</p>
-<p>slice, ncb, moderate, 6</p>
-<p>thats it, cb, fast, 4</p>
-<p>toxic, cb, fast, 3</p>
-<p>track shot, ncb, slow, 6</p>
-<p>trust the poets, ncb, slow, 5</p>
-<p>tubman, ncb, slow, 5</p>
-<p>waltzing with rhonda, ncb, slow, 3</p>
+/* ======= Add individual or all songs ======= */
+const songInput = document.getElementById('songInput');
+document.querySelectorAll('.addBtn').forEach(btn => {
+  btn.addEventListener('click', e => {
+    const text = e.target.parentElement.textContent.replace('+', '').trim();
+    songInput.value += (songInput.value ? '\n' : '') + text;
+  });
+});
+document.getElementById('addAllBtn').addEventListener('click', () => {
+  const allSongs = Array.from(document.querySelectorAll('#songList p'))
+    .map(p => p.textContent.replace('+', '').trim())
+    .join('\n');
+  songInput.value = allSongs;
+});
+document.getElementById('clearAllBtn').addEventListener('click', () => {
+  songInput.value = '';
+});
+</script>
 </body>
 </html>
