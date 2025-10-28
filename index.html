@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <title>Set Daddy</title>
 <style>
-/* ======= Dark-mode styling ======= */
 body {
   font-family: Arial, sans-serif;
   margin: 2rem;
@@ -20,7 +19,7 @@ img {
 label {
   display:block;
   margin-top:1rem;
-  margin-bottom:1rem;
+  margin-bottom:0.5rem;
   font-weight:bold;
   color: #cfcfcf;
 }
@@ -54,13 +53,6 @@ button:hover { background:#4a4a4a; }
   border-radius:3px;
   color:#dcdcdc;
 }
-.example {
-  background:#3a3a3a;
-  padding:0.5rem;
-  margin-top:0.5rem;
-  font-family:monospace;
-  color:#dcdcdc;
-}
 .song-entry {
   margin: 0.3rem 0;
 }
@@ -68,6 +60,15 @@ button:hover { background:#4a4a4a; }
   margin-left: 0.5rem;
   padding: 0.2rem 0.6rem;
   font-size: 0.8rem;
+}
+.input-row {
+  display: flex;
+  gap: 2rem; /* more space between inputs */
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+.input-group {
+  flex: 1;
 }
 </style>
 </head>
@@ -82,8 +83,16 @@ button:hover { background:#4a4a4a; }
 <label for="songInput">Enter songs:</label>
 <textarea id="songInput" placeholder="e.g.&#10;nola medley, ncb, moderate, 5&#10;thats it, cb, fast, 7"></textarea>
 
-<label for="setLength">Set length (minutes):</label>
-<input type="number" id="setLength" min="1" value="30">
+<div class="input-row">
+  <div class="input-group">
+    <label for="setLength">Set length (minutes):</label>
+    <input type="number" id="setLength" min="1" value="30">
+  </div>
+  <div class="input-group">
+    <label for="numCBs">Number of chop busters desired (max 2):</label>
+    <input type="number" id="numCBs" min="0" max="2" value="1">
+  </div>
+</div>
 
 <button id="generateBtn">Generate</button>
 <button id="addAllBtn">Add All</button>
@@ -95,7 +104,7 @@ button:hover { background:#4a4a4a; }
 </br>
 <h2>Songs</h2>
 <div id="songList">
-  <p class="song-entry">bad guy, ncb, fast, 3 <button class="addBtn">+</button></p>
+    <p class="song-entry">bad guy, ncb, fast, 3 <button class="addBtn">+</button></p>
   <p class="song-entry">bella ciao, ncb, moderate, 2 <button class="addBtn">+</button></p>
   <p class="song-entry">besame, ncb, moderate, 5 <button class="addBtn">+</button></p>
   <p class="song-entry">beyoncelina, ncb, fast, 4 <button class="addBtn">+</button></p>
@@ -133,7 +142,6 @@ button:hover { background:#4a4a4a; }
 </div>
 
 <script>
-/* ======= Utility functions ======= */
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -156,50 +164,66 @@ function parseSongs(text) {
   }
   return songs;
 }
-function buildSet(songs, setLen) {
+
+/**
+ * Build setlist logic with up to 2 CBs placed early.
+ */
+function buildSet(songs, setLen, desiredCBs) {
   const cbSongs = songs.filter(s => s.cb);
   const nonCbSongs = songs.filter(s => !s.cb);
   shuffle(cbSongs);
   shuffle(nonCbSongs);
-  function tryWithCb(pos) {
-    if (!cbSongs.length) return null;
-    const cb = cbSongs[0];
-    const result = [];
-    let total = 0;
-    let lastPace = null;
-    function addSong(song) {
-      if (lastPace === 'slow' && song.pace === 'slow') return false;
-      result.push(song);
-      total += song.duration;
-      lastPace = song.pace;
-      return true;
-    }
-    for (let i = 0; i < pos - 1; i++) {
-      const next = nonCbSongs.shift();
-      if (!next) break;
-      if (!addSong(next)) break;
-    }
-    if (!addSong(cb)) return null;
-    while (total < setLen && nonCbSongs.length) {
-      const next = nonCbSongs.shift();
-      if (!addSong(next)) continue;
-    }
-    while (total > setLen && result.length) {
-      const last = result.pop();
-      total -= last.duration;
-    }
-    const cbIndex = result.findIndex(s => s.cb);
-    if (cbIndex !== 1 && cbIndex !== 2) return null;
-    return result;
+
+  const numCBs = Math.min(desiredCBs, 2, cbSongs.length);
+  const result = [];
+  let total = 0;
+  let lastPace = null;
+
+  function addSong(song) {
+    if (lastPace === 'slow' && song.pace === 'slow') return false;
+    result.push(song);
+    total += song.duration;
+    lastPace = song.pace;
+    return true;
   }
-  let set = tryWithCb(2) || tryWithCb(3);
-  return set || [];
+
+  // Start building
+  if (numCBs === 1) {
+    // Fill first 1–2 with non-CB
+    if (nonCbSongs.length) addSong(nonCbSongs.shift());
+    const cb = cbSongs.shift();
+    if (cb) addSong(cb); // CB second
+  } else if (numCBs === 2) {
+    // CB1 around 2, CB2 around 4–5
+    if (nonCbSongs.length) addSong(nonCbSongs.shift());
+    const cb1 = cbSongs.shift();
+    if (cb1) addSong(cb1);
+    if (nonCbSongs.length) addSong(nonCbSongs.shift());
+    const cb2 = cbSongs.shift();
+    if (cb2) addSong(cb2);
+  }
+
+  // Fill remainder until we hit set length
+  while (total < setLen && nonCbSongs.length) {
+    const s = nonCbSongs.shift();
+    if (!addSong(s)) continue;
+  }
+
+  // Trim excess
+  while (total > setLen && result.length) {
+    const last = result.pop();
+    total -= last.duration;
+  }
+
+  return result;
 }
 
-/* ======= UI logic ======= */
+/* ===== UI Logic ===== */
 document.getElementById('generateBtn').addEventListener('click', () => {
   const inputText = document.getElementById('songInput').value;
   const setLen = parseInt(document.getElementById('setLength').value, 10);
+  const desiredCBs = Math.min(2, parseInt(document.getElementById('numCBs').value, 10) || 0);
+
   if (isNaN(setLen) || setLen <= 0) {
     alert('Please enter a valid set length (minutes).');
     return;
@@ -209,7 +233,7 @@ document.getElementById('generateBtn').addEventListener('click', () => {
     alert('No valid songs were found in the input.');
     return;
   }
-  const set = buildSet(songs, setLen);
+  const set = buildSet(songs, setLen, desiredCBs);
   if (!set.length) {
     document.getElementById('output').textContent =
       'Couldn’t build a set that meets all constraints with the supplied songs.';
@@ -223,7 +247,7 @@ document.getElementById('generateBtn').addEventListener('click', () => {
   document.getElementById('output').textContent = lines.join('\n');
 });
 
-/* ======= Add individual or all songs ======= */
+/* ===== Song Adding Logic ===== */
 const songInput = document.getElementById('songInput');
 document.querySelectorAll('.addBtn').forEach(btn => {
   btn.addEventListener('click', e => {
