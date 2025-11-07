@@ -99,7 +99,7 @@ button:hover { background:#4a4a4a; }
 <h2>Papa provides. You practice.</h2>
 <p>Early chop busters. No slow songs back-to-back. As close as possible to the target set length.</p>
 
-<p><b>Manual entry only required for unlisted songs.</b> See below for details.</p>
+<p><b>Manual entry only required for unlisted songs.</b> See details below.</p>
 
 <div class="input-row">
   <div class="input-group">
@@ -115,9 +115,9 @@ button:hover { background:#4a4a4a; }
 <button id="addAllBtn">Add All</button>
 <button id="clearAllBtn">Clear</button>
 
-
 </br>
-<h2>Songs</h2>
+</br>
+<h2>Add Songs</h2>
 <div id="songList">
     <p class="song-entry">bad guy, ncb, fast, 3 <button class="addBtn">+</button></p>
   <p class="song-entry">bella ciao, ncb, moderate, 2 <button class="addBtn">+</button></p>
@@ -156,13 +156,11 @@ button:hover { background:#4a4a4a; }
   <p class="song-entry">waltzing with rhonda, ncb, slow, 3 <button class="addBtn">+</button></p>
 </div>
 
-<p><strong>Manual data entry format:</strong><br><br>
-<code>song title, cb/ncb (chop buster or not chop buster), speed, duration (minutes)</code></p>
+<textarea id="songInput" placeholder="Manual data entry format:&#10;song title, cb/ncb (chop buster or not chop buster), speed, duration (minutes)&#10;&#10;e.g.&#10;nola medley, ncb, moderate, 5" style="margin-top:1rem;"></textarea>
+<button id="addManualBtn">Add Songs Manually</button>
 
-<label for="songInput">Enter songs:</label>
+<label for="songInput">Possible Setlist Tunes:</label>
 <div id="songInputContainer" style="background:#2d2d2d; padding:1rem; border:1px solid #444; border-radius:3px; min-height:100px;"></div>
-<textarea id="songInput" placeholder="e.g.&#10;nola medley, ncb, moderate, 5" style="margin-top:1rem;"></textarea>
-<button id="addManualBtn">Add Manual Song</button>
 <button id="generateBtn">Generate</button>
 
 <h2>Output</h2>
