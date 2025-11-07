@@ -76,7 +76,10 @@ function buildSet(songs, setLen, desiredCBs) {
 
 /* ===== UI Logic ===== */
 document.getElementById('generateBtn').addEventListener('click', () => {
-  const inputText = document.getElementById('songInput').value;
+  const inputText = Array.from(songInputContainer.querySelectorAll('.song-chip span'))
+  .map(span => span.textContent.trim())
+  .join('\n');
+
   const setLen = parseInt(document.getElementById('setLength').value, 10);
   const desiredCBs = Math.min(2, parseInt(document.getElementById('numCBs').value, 10) || 0);
 
@@ -105,18 +108,47 @@ document.getElementById('generateBtn').addEventListener('click', () => {
 
 /* ===== Song Adding Logic ===== */
 const songInput = document.getElementById('songInput');
+const songInputContainer = document.getElementById('songInputContainer');
+
+function addSongChip(text) {
+  const chip = document.createElement('div');
+  chip.className = 'song-chip';
+
+  const textSpan = document.createElement('span');
+  textSpan.textContent = text;
+
+  const removeBtn = document.createElement('button');
+  removeBtn.textContent = 'x';
+  removeBtn.addEventListener('click', () => {
+    chip.remove();
+  });
+
+  chip.appendChild(textSpan);
+  chip.appendChild(removeBtn);
+  songInputContainer.appendChild(chip);
+}
+
 document.querySelectorAll('.addBtn').forEach(btn => {
   btn.addEventListener('click', e => {
     const text = e.target.parentElement.textContent.replace('+', '').trim();
-    songInput.value += (songInput.value ? '\n' : '') + text;
+    addSongChip(text);
   });
 });
 document.getElementById('addAllBtn').addEventListener('click', () => {
   const allSongs = Array.from(document.querySelectorAll('#songList p'))
-    .map(p => p.textContent.replace('+', '').trim())
-    .join('\n');
-  songInput.value = allSongs;
+    .map(p => p.textContent.replace('+', '').trim());
+  allSongs.forEach(song => addSongChip(song));
+});
+document.getElementById('addManualBtn').addEventListener('click', () => {
+  const text = songInput.value.trim();
+  if (text) {
+    text.split('\n').forEach(line => {
+      if (line.trim()) addSongChip(line.trim());
+    });
+    songInput.value = '';
+  }
 });
 document.getElementById('clearAllBtn').addEventListener('click', () => {
   songInput.value = '';
+  songInputContainer.innerHTML = '';
 });
